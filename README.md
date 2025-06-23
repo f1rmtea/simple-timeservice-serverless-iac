@@ -170,8 +170,7 @@ curl http://localhost:8080/
      - `AWS_SECRET_ACCESS_KEY`
 
 3. **Trigger deployment**
-   - Push any changes to the `main` branch
-   - Or manually trigger the workflow from the Actions tab
+   - Trigger the workflow from the Actions tab
    - The GitHub Actions workflow will automatically run `terraform apply`
 
 4. **Monitor deployment**
