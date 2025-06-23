@@ -6,14 +6,11 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPO: simple-timeservice
 
 jobs:
-
   terraform:
-    needs: build-and-push
     runs-on: ubuntu-latest
-    environment: simple-timeservice-serverless-iac  # Add this line to access environment secrets
+    environment: simple-timeservice-serverless-iac
     defaults:
       run:
         working-directory: terraform
@@ -23,9 +20,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -38,4 +35,7 @@ jobs:
           terraform validate
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="image_tag=${{ needs.build-and-push.outputs.IMAGE_TAG }}"
+        run: terraform apply -auto-approve -var="image_tag=${{ github.sha }}"
+
+      - name: Output API URL
+        run: terraform output api_url
