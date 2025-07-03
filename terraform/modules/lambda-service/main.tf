@@ -105,7 +105,6 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
   retention_in_days = 7
 }
 
-# Rest of your API Gateway configuration...
 # 7. API Gateway setup
 resource "aws_api_gateway_rest_api" "api" {
   name = "${var.name}-api"
